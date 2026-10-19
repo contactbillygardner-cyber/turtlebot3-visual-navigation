@@ -1,1 +1,13 @@
 others/
+
+# Local runtime and generated experiment outputs
+.venv/
+__pycache__/
+*.pyc
+track-a-output/
+camera-navigation-output/
+candidate-nominal/
+candidate-noisy/
+robotis_tb3/evidence/**/trace.json
+robotis_tb3/evidence/**/series.json
+part-c-replay-output/
