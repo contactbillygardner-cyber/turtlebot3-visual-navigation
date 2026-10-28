@@ -21,6 +21,8 @@ if __name__=='__main__':
             trial=parser().parse_args([])
             trial.headless=True
             trial.seconds=args.seconds
+            trial.q_scale=args.q_scale
+            trial.r_scale=args.r_scale
             trial.seed=seed
             trial.output=str(root/condition/f'seed-{seed}')
             for name,value in changes.items():
