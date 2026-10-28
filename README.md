@@ -1,3 +1,30 @@
+# TurtleBot3 visual waypoint navigation - review draft
+
+Track A simulation: LiDAR obstacle navigation, encoder/camera EKF and estimated-state feedback.
+This branch contains a tested development pipeline and project-page drafts for team review.
+
+- [Project page and run instructions](robotis_tb3/TRACK_A_PROJECT.md)
+- [Part C: estimation equations, tuning and results](robotis_tb3/PART_C_ESTIMATION.md)
+- [Viva practice notes](robotis_tb3/PART_C_VIVA_NOTES.txt)
+- [Evidence and reproduction instructions](robotis_tb3/evidence/README.md)
+
+The baseline completed **8/8 simulation trials** with no recorded collisions.
+The Part C study compared **nine Q/R settings on eight fixed sensor streams**;
+these are 72 estimator replays, not navigation trials. A conservative candidate
+also completed two separate fresh navigation checks. After the batch Q/R fix,
+it completed **8/8 online trials at Q x10,R x1** across all four conditions with
+no recorded collisions or timeouts. Mean per-trial position RMSE was 4.90 cm,
+versus 6.04 cm in the archived baseline. [Results and plots](robotis_tb3/evidence/part-c/navigation-2026-10-28/Rerun-summary.txt).
+**18 regression tests pass.**
+Default tuning remains Q x1,R x1; the candidate is selected with `--q-scale 10`.
+
+Team/group details, actual human contribution statements, calibration validation,
+and the final five-minute video link still need team completion/review. Codex
+assistance with implementation, experiments, tests and drafting is declared in
+the project notes. This is not a claimed finished assessment submission.
+
+## Inherited ROBOTIS model collection
+
 # robotis_mujoco_menagerie
 A collection of models for the MuJoCo physics engine from ROBOTIS
 

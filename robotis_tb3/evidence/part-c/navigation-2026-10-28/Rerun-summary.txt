@@ -1,0 +1,20 @@
+Full navigation rerun — 28 October 2026
+
+Commit: 8e5a8f4eba59deebb88f573a46da9ea26d521306
+Q covariance scale: 10; R covariance scale: 1.
+Two seeds (0 and 1) per condition, 110 s simulation limit.
+Successes: 8/8; collisions: 0; timeouts: 0.
+Parameters verified in every saved result.
+
+nominal: 2/2 success; mean time 43.30 s; position RMSE 4.55 cm (archived baseline 5.67 cm).
+camera_noise_dropout: 2/2 success; mean time 50.55 s; position RMSE 4.35 cm (archived baseline 5.45 cm).
+shifted_obstacle: 2/2 success; mean time 47.30 s; position RMSE 5.96 cm (archived baseline 7.64 cm).
+slippery_floor: 2/2 success; mean time 43.25 s; position RMSE 4.73 cm (archived baseline 5.41 cm).
+
+Unweighted mean of per-trial position RMSE: 4.90 cm versus archived baseline 6.04 cm (19.0% lower).
+The baseline comparison uses archived Q x1/R x1 runs, not a newly rerun control group. Online trajectories differ under changed tuning; this is not paired fixed-stream replay.
+Small simulation sample; success here does not establish performance on all environments.
+
+Mean per-trial NEES: 0.96; low NEES suggests conservative uncertainty, not proof of optimal tuning.
+
+Files: summary.json, metrics.csv/json, baseline-comparison.csv, evaluation.png, per-trial traces, source snapshots, camera images, run-manifest.json.
