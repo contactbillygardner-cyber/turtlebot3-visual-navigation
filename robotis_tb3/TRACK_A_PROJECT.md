@@ -193,8 +193,13 @@ model, Q/R study, uncertainty trade-off and reproduction commands. Nine
 configurations were replayed on eight fixed trajectories; the conservative
 Q x10,R x1 candidate reduced reserved-trace position RMSE from 6.18 to 5.04 cm
 but had mean NEES 0.98. Two separate fresh seed-2 online checks completed.
-Default Q/R scales remain 1/1. All 17 current regression tests passed. The
-replay comparisons are not additional navigation-success trials.
+After the batch Q/R propagation fix, the candidate completed 8/8 online trials
+on 28 October 2026 (two seeds per condition), with no recorded collisions or
+timeouts. Mean per-trial position RMSE was 4.90 cm versus the archived baseline's
+6.04 cm. These are online trials with changing trajectories; the baseline was
+not rerun. [Report and plot](evidence/part-c/navigation-2026-10-28/Rerun-summary.txt).
+Default Q/R scales remain 1/1. All 18 current regression tests passed. The
+72 replay comparisons are not additional navigation-success trials.
 
 ## Submission items still requiring the team
 

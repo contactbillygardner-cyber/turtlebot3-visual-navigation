@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-28",
+  "commit": "8e5a8f4eba59deebb88f573a46da9ea26d521306",
+  "command": ".venv/bin/python -u robotis_tb3/evaluate_track_a.py --headless --trials 2 --seconds 110 --q-scale 10 --r-scale 1 --output ../outputs/track-a-qr-fixed-2026-10-28",
+  "python": "3.14.4 (main, Apr  7 2026, 13:13:20) [Clang 21.0.0 (clang-2100.0.123.102)]",
+  "packages": {
+    "numpy": "2.5.4",
+    "opencv-python": "5.0.0.93",
+    "mujoco": "3.16.0",
+    "matplotlib": "3.11.2"
+  },
+  "verified_trials": 8,
+  "verified_q_scale": 10,
+  "verified_r_scale": 1
+}

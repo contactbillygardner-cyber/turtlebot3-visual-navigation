@@ -205,12 +205,48 @@ The time limit and physical success checks were unchanged.
 | noisy-seed-2 | Yes | 49.7 | 5.07 | 1.85 | 3.57 |
 
 
-Both checks completed with no recorded collisions. This is only two candidate
-closed-loop checks, not the earlier eight-run baseline study, and not proof
-that all environments or disturbances are handled. The baseline default was
-retained so the previously evaluated running configuration stays explicit.
-All 17 current regression tests passed. Additional checks cover invalid noise
-scales and encoder reconstruction across a heading wrap.
+Both seed-2 checks completed with no recorded collisions. They remain separate
+from the earlier eight-run baseline study and the following candidate batch.
+
+### Full candidate navigation batch — 28 October 2026
+
+After fixing `evaluate_track_a.py` to propagate the requested Q/R scales into
+every trial, the candidate was rerun online across all four conditions with
+seeds 0 and 1 and a 110 s limit per trial. Each saved result was checked for
+Q x10,R x1. These are eight full closed-loop navigation trials, not replays.
+The simulation source commit is `8e5a8f4eba59deebb88f573a46da9ea26d521306`.
+
+| Condition | Success | Mean completion (s) | Mean position RMSE (cm) | Archived baseline RMSE (cm) |
+|---|---:|---:|---:|---:|
+| Nominal | 2/2 | 43.30 | 4.55 | 5.67 |
+| Camera noise/dropout | 2/2 | 50.55 | 4.35 | 5.45 |
+| Shifted obstacle + encoder bias | 2/2 | 47.30 | 5.96 | 7.64 |
+| Slippery floor | 2/2 | 43.25 | 4.73 | 5.41 |
+
+All eight trials docked with no recorded collisions or timeouts. The camera
+condition used pixel-noise standard deviation 5 and 30% random dropout;
+the shifted obstacle was displaced by 0.15 m with encoder bias 0.004;
+the slippery-floor friction coefficient was 0.6. Other parameters are recorded
+in the individual results and batch summary.
+
+The unweighted mean of per-trial position RMSE was **4.90 cm**, compared with
+**6.04 cm** in the archived Q x1,R x1 baseline, about **19% lower**. This uses
+the existing baseline, not a newly rerun control group. Changed EKF tuning
+changes routes and subsequent observations, so this is an online performance
+comparison, distinct from the paired fixed-stream replay study in Section 5.
+Seeds 0/1 were reused; these are not new held-out random seeds. Two runs per
+condition are limited evidence of robustness, not proof for unseen environments.
+
+Mean per-trial NEES was **0.96**, indicating conservative uncertainty. Navigation
+success does not establish optimal or fully consistent tuning. Default Q/R
+scales remain 1/1; use explicit scales to reproduce this candidate batch.
+All **18 regression tests passed** after the fix, including a CLI regression
+that verifies Q/R propagation across every condition and its saved summary.
+
+See the [batch report](evidence/part-c/navigation-2026-10-28/Rerun-summary.txt),
+[per-trial metrics](evidence/part-c/navigation-2026-10-28/metrics.csv),
+[baseline comparison](evidence/part-c/navigation-2026-10-28/baseline-comparison.csv)
+and [run provenance](evidence/part-c/navigation-2026-10-28/run-manifest.json).
 
 ## 7. Failure diagnosis and integration
 
@@ -238,6 +274,8 @@ From the repository root, after installing `requirements-analysis.txt`, first ex
 .venv/bin/python robotis_tb3/plot_ekf_study.py part-c-replay-output
 .venv/bin/python robotis_tb3/track_a_project.py --headless --q-scale 10 --r-scale 1 --seed 2 --seconds 65 --output candidate-nominal
 .venv/bin/python robotis_tb3/track_a_project.py --headless --q-scale 10 --r-scale 1 --seed 2 --pixel-noise 5 --dropout .3 --seconds 65 --output candidate-noisy
+.venv/bin/python robotis_tb3/evaluate_track_a.py --headless --trials 2 --seconds 110 --q-scale 10 --r-scale 1 --output candidate-batch-output
+.venv/bin/python robotis_tb3/analyse_track_a.py candidate-batch-output
 .venv/bin/python -m unittest discover -s robotis_tb3 -p 'test_*.py' -v
 ```
 
@@ -247,6 +285,20 @@ series and source snapshots. `closed-loop/` contains fresh online results and
 traces. Keep the plots with the project page, identify fixed-trajectory replay
 versus online experiments, and show estimate/uncertainty alongside truth in
 the team video.
+
+The published eight-trial candidate batch is in
+`evidence/part-c/navigation-2026-10-28/`. It contains compressed original traces,
+camera images, occupancy grids, per-run source snapshots and SHA-256 manifests,
+metrics, the batch summary and the evaluation plot. After expanding evidence,
+regenerate its metrics/plot with:
+
+```sh
+.venv/bin/python robotis_tb3/analyse_track_a.py robotis_tb3/evidence/part-c/navigation-2026-10-28
+```
+
+The batch `trace-sha256.json` records hashes of uncompressed trace bytes. Only
+output paths in result/summary metadata were made repository-relative; trace
+contents and source snapshots are preserved.
 
 ## 9. Contribution and AI-use declaration to verify
 
@@ -284,3 +336,5 @@ or complete assessment submission is claimed.
 ![Q/R replay comparison](evidence/part-c/tuning-comparison.png)
 
 ![Candidate uncertainty on reserved noisy-camera replay](evidence/part-c/uncertainty-validation.png)
+
+![Eight online candidate navigation trials and nominal state uncertainty, 28 October 2026](evidence/part-c/navigation-2026-10-28/evaluation.png)

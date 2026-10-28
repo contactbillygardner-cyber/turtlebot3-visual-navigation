@@ -8,6 +8,7 @@ track-a-output/
 camera-navigation-output/
 candidate-nominal/
 candidate-noisy/
+candidate-batch-output/
 robotis_tb3/evidence/**/trace.json
 robotis_tb3/evidence/**/series.json
 part-c-replay-output/

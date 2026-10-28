@@ -11,7 +11,11 @@ This branch contains a tested development pipeline and project-page drafts for t
 The baseline completed **8/8 simulation trials** with no recorded collisions.
 The Part C study compared **nine Q/R settings on eight fixed sensor streams**;
 these are 72 estimator replays, not navigation trials. A conservative candidate
-also completed two separate fresh navigation checks. **17 regression tests pass.**
+also completed two separate fresh navigation checks. After the batch Q/R fix,
+it completed **8/8 online trials at Q x10,R x1** across all four conditions with
+no recorded collisions or timeouts. Mean per-trial position RMSE was 4.90 cm,
+versus 6.04 cm in the archived baseline. [Results and plots](robotis_tb3/evidence/part-c/navigation-2026-10-28/Rerun-summary.txt).
+**18 regression tests pass.**
 Default tuning remains Q x1,R x1; the candidate is selected with `--q-scale 10`.
 
 Team/group details, actual human contribution statements, calibration validation,

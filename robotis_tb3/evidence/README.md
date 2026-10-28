@@ -3,7 +3,11 @@
 The baseline folder contains eight successful closed-loop simulation trials,
 metrics, plots, parameter metadata, code snapshots and trace hashes. The Part C
 folder contains nine-setting replay comparisons and two separate fresh candidate
-closed-loop checks. They must not be pooled into one navigation success count.
+closed-loop checks. The dated `part-c/navigation-2026-10-28/` folder adds eight
+online candidate trials after the batch Q/R argument fix, with Q x10,R x1
+verified in every result. All eight completed without recorded collisions or
+timeouts. Keep the baseline, seed-2 checks, dated batch and estimator replays
+identified separately when reporting navigation success counts.
 
 Large JSON traces are stored as `.json.gz`. Source snapshots are archived as
 `source-snapshot.zip` beside their SHA-256 manifests. Derived replay series are
@@ -24,6 +28,14 @@ Part C selection file can be verified after decompression.
 Review [baseline results](baseline/Evaluation-summary.txt), [Part C write-up](../PART_C_ESTIMATION.md),
 [study summary](part-c/study-summary.json), [tuning comparison](part-c/tuning-comparison.png)
 and [uncertainty comparison](part-c/uncertainty-validation.png).
+
+For the dated candidate batch, see the [report](part-c/navigation-2026-10-28/Rerun-summary.txt),
+[plot](part-c/navigation-2026-10-28/evaluation.png),
+[metrics](part-c/navigation-2026-10-28/metrics.csv),
+[archived-baseline comparison](part-c/navigation-2026-10-28/baseline-comparison.csv)
+and [run manifest](part-c/navigation-2026-10-28/run-manifest.json).
+The batch also includes uncompressed-trace SHA-256 hashes and per-trial source
+snapshots. Reproduce or reanalyse using the commands in the Part C write-up.
 
 These are small correlated simulation samples, not evidence of perfect tuning,
 hardware calibration, a guaranteed grade, or a finished assessment submission.
