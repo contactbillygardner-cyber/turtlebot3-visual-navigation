@@ -3,7 +3,7 @@
 **41014 Sensors and Control in Mechatronics Systems, Assessment 4: Integrated Project**
 
 **Group 11**: Ethan Wong - 13608993, Ibrahym Abdillah -25782362, Ho Youn Garwood (), William Gardener ()
-**Repository:** [[GitHub repository URL](https://github.com/contactbillygardner-cyber/turtlebot3-visual-navigation)]
+**Repository:** [[GitHub repository URL](https://github.com/Ewongated/Turtlebot3-Sim-Sensors.git)]
 If access to Repository is restricted contact ethanqcw@gmail.com as the group member with ownership rights over the repo has left the team.
 **Demo video** included inside robotis_tb3
 **Platform:** simulation only (MuJoCo), no hardware.
