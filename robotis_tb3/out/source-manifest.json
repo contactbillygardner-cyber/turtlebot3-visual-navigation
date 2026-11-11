@@ -1,0 +1,13 @@
+{
+  "track_a_project.py": "ae824988501e980bc8c2fbbcb96623d3630d30efc7de549871c4a9294b160cdb",
+  "track_a_sensors.py": "55bd73d1c410bfcc3626640852a04511e3bba7de122187ec199e3ca6852c842a",
+  "track_a_estimation.py": "244b5cb0c6bb462ee3110b6995250fea8e55da31e57d8ac46ba49d1ea6b444ec",
+  "track_a_navigation.py": "0e5e64cad67325d1110fd9993297a01cef2076b551595ddebfa9af8e2b57694a",
+  "lqr/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "lqr/track_a_control.py": "1b57feb1b6052310c3190cc83375122925e15e377427bd506d288529c43f8f5a",
+  "lqr/track_a_control_design.py": "fefe424b6c6c95d136db9b7858fe8d569565d3bd25ae5191b40b3ad33d2e1067",
+  "actuator_compensation.py": "d770bd05984481461b6734c534d15e61a758851a7b855fc2da16806a564df60b",
+  "turtlebot_model.py": "47cfe1a51d4e1d1566b08bc1716a7f668448d4ac804f5fb75217a2ebafd334b5",
+  "camera_navigation.py": "842888111c7360f2a2e0ecbfc36bfbd7dc662542ac6a438df40ff3e8be5007bd",
+  "turtlebot3_waffle_pi.xml": "c9804c46e8a72948ade11d64312a6ba17df25d3178627810d6b5ae77b6d1eeac"
+}
