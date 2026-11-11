@@ -8,6 +8,7 @@ import unittest
 import numpy as np
 from lqr import track_a_control_design as d
 
+# Unittests to confirm Kinematics for model
 
 class DesignTests(unittest.TestCase):
     def setUp(self):

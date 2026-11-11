@@ -7,7 +7,7 @@ from track_a_estimation import LANDMARK, marker_measurement
 GOAL = np.array([2.36, 0.0])
 
 
-class OccupancyPlanner:
+class OccupancyPlanner: 
     resolution = .10
     lower = np.array([-.5, -1.4])
     shape = (41, 29)
@@ -21,7 +21,7 @@ class OccupancyPlanner:
     def point(self, cell):
         return self.lower + np.asarray(cell)*self.resolution
 
-    def update(self, pose, angles, ranges):
+    def update(self, pose, angles, ranges): #Create map from lidar scan, obstacles are inflated
         self.occupied.fill(False)  # Local rolling map avoids accumulating pose drift.
         origin = pose[:2] - .049 * np.array([np.cos(pose[2]), np.sin(pose[2])])
         hits = origin + ranges[:,None]*np.column_stack((np.cos(angles+pose[2]), np.sin(angles+pose[2])))
@@ -37,7 +37,7 @@ class OccupancyPlanner:
                     if 0<=x<self.shape[0] and 0<=y<self.shape[1]:
                         self.occupied[x,y] = True
 
-    def plan(self, start, goal=GOAL):
+    def plan(self, start, goal=GOAL): #Only move through unoccupied squares
         start, end = self.cell(start), self.cell(goal)
         frontier = [(0.0, start)]
         costs, parents = {start:0.0}, {}
@@ -55,11 +55,11 @@ class OccupancyPlanner:
                     continue
                 if self.occupied[nxt]:
                     continue
-                if dx and dy and (self.occupied[current[0]+dx,current[1]] or
+                if dx and dy and (self.occupied[current[0]+dx,current[1]] or #Fixes Corner cutting through obstacles
                                   self.occupied[current[0],current[1]+dy]):
                     continue
                 # A small fixed upper-side preference prevents noisy symmetric
-                # scans from flipping between equally short routes each frame.
+                # scans from flipping between equally short routes each frame. Routing bias. 
                 cost = costs[current] + np.hypot(dx,dy) + (1.0 if self.point(nxt)[1]<-.05 else 0)
                 if cost >= costs.get(nxt, np.inf):
                     continue
@@ -74,7 +74,7 @@ RECOVERY_FRAMES = 10     # consecutive frames with no planner path before search
 SEARCH_TURN = 0.8        # rad/s; the relay value, below it the wheels barely move (actuator dead zone)
 
 
-class StateFeedbackTracker:
+class StateFeedbackTracker: #Base functions + State Machine - drive to goal, dock, search(rotate to find marker)
     def __init__(self, recovery=False):
         self.arrival_count = 0
         self.arrived = False
@@ -174,7 +174,7 @@ class StateFeedbackTracker:
                 speed,turn,status=self._search(estimate)
             else:
                 speed,turn,status=self.follow_path(estimate,path)
-        # Independent body-frame LiDAR stop envelope; angles are sensor readings.
+        # Independent body-frame LiDAR stop envelope; angles are sensor readings. Safety Stop
         forward = ranges[np.abs(angles)<.40]
         if speed>0 and np.min(forward)<.36:
             return 0.0,0.0,'LIDAR SAFETY STOP'

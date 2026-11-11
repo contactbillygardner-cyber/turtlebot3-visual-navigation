@@ -52,8 +52,8 @@ def discretise(v, dt=DT):
     return Ad, Bd
 
 
-def controllability_rank(v):
-    A, B = error_model(v)
+def controllability_rank(v): #System is rank 2 
+    A, B = error_model(v) 
     C = np.hstack([B, A @ B])
     return int(np.linalg.matrix_rank(C, tol=1e-12))
 
@@ -71,7 +71,7 @@ def bryson_weights(e_y_max=0.10, e_theta_max=0.35, w_max=W_MAX):
     return Q, R
 
 
-def lqr_discrete(v, Q, R, dt=DT):
+def lqr_discrete(v, Q, R, dt=DT): #Uses Discrete - More accurate to robot function
     """Discrete LQR gain K (1x2) for u = -K x at speed v."""
     Ad, Bd = discretise(v, dt)
     P = solve_discrete_are(Ad, Bd, Q, R)
@@ -79,7 +79,7 @@ def lqr_discrete(v, Q, R, dt=DT):
     return K
 
 
-def lqr_continuous(v, Q, R):
+def lqr_continuous(v, Q, R): #Continuous is for sanity checking
     A, B = error_model(v)
     P = solve_continuous_are(A, B, Q, R)
     return np.linalg.solve(R, B.T @ P)
@@ -117,6 +117,7 @@ def damping_and_wn(poles):
 
 def simulate_nonlinear(K, v=V_NOM, e_y0=0.20, e_theta0=0.0, t_end=15.0,
                        dt=DT, w_max=W_MAX, substeps=10):
+    #Confirm functionality without linearity/saturation
     """Closed loop with the NONLINEAR error kinematics and yaw saturation.
 
     The controller runs at `dt` (zero-order hold); the plant is integrated at
@@ -135,6 +136,7 @@ def simulate_nonlinear(K, v=V_NOM, e_y0=0.20, e_theta0=0.0, t_end=15.0,
 
 
 def step_metrics(T, EY, W, band=0.02):
+    #Calculates overshoot
     """Overshoot (fraction of the initial offset), settling time, control effort."""
     e0 = EY[0]
     overshoot = max(0.0, -np.min(np.sign(e0) * EY)) / abs(e0)
@@ -146,7 +148,7 @@ def step_metrics(T, EY, W, band=0.02):
                 peak_w=float(np.max(np.abs(W))))
 
 
-def augmented_discrete(v, tau, g, dt=DT):
+def augmented_discrete(v, tau, g, dt=DT): #Adds w_act_dot to compare realistic instead of ideal
     """Error model plus a first-order yaw actuator, exact ZOH discretisation.
 
     x = [e_y, e_theta, w_act],  w_act_dot = (g*w_cmd - w_act)/tau
@@ -161,7 +163,7 @@ def augmented_discrete(v, tau, g, dt=DT):
     return E[:3, :3], E[:3, 3:]
 
 
-def closed_loop_robustness(K2, v, tau, g, dt=DT):
+def closed_loop_robustness(K2, v, tau, g, dt=DT): # Checks largest absolute z value among poles(Spectral Radius) + Worst damping
     """Spectral radius and slowest-oscillation damping of the REAL loop when the
     2-state gain K2 = [K_ey, K_etheta] is applied to a lagged, mis-scaled plant."""
     Ad, Bd = augmented_discrete(v, tau, g, dt)
@@ -173,7 +175,7 @@ def closed_loop_robustness(K2, v, tau, g, dt=DT):
     return float(np.max(np.abs(z))), float(np.min(zeta))
 
 
-def max_stable_yaw_gain(K2, v, tau, dt=DT, g_hi=20.0):
+def max_stable_yaw_gain(K2, v, tau, dt=DT, g_hi=20.0): #Checks margins of Z before instability from g = 1 to 20 (Lower g rarely causes instability)
     """Largest plant yaw gain g (>=1) that keeps the loop stable (gain margin)."""
     lo, hi = 1.0, g_hi
     if closed_loop_robustness(K2, v, tau, hi, dt)[0] < 1:
@@ -187,7 +189,7 @@ def max_stable_yaw_gain(K2, v, tau, dt=DT, g_hi=20.0):
     return lo
 
 
-def robustness_report(tau=0.11):
+def robustness_report(tau=0.11): #Table results (Rho = 1 good, low zeta good), Repeats testing with ideal actuator to test lag
     Q, R = bryson_weights()
     K = lqr_discrete(V_NOM, Q, R)[0]
     print("\n=== Robustness of the approved LQR gain K=%s ===" % np.round(K, 3))
@@ -208,7 +210,7 @@ def robustness_report(tau=0.11):
     print(f"  v=0.180: g_max = {max_stable_yaw_gain(K, 0.18, 0.01):.2f}")
 
 
-def main(make_plot=True):
+def main(make_plot=True): #Runs full code.
     print("=== Controllability of the path-error model ===")
     for v in (0.0, 0.05, 0.18):
         print(f"v = {v:4.2f} m/s -> rank [B, AB] = {controllability_rank(v)} (need 2)")

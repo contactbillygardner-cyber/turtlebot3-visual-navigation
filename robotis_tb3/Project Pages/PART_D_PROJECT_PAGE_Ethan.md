@@ -13,7 +13,7 @@ All results come from one final set of 165 simulation trials with **five seeds p
 
 **Open items.** The rotate-in-place threshold study is not run. The causes of the slowest plain (shifted-obstacle seed 2, 61.6 s) and compensated (shifted-obstacle seed 0, XTE 16.7 cm) seeds were not investigated.
 
-Full write-up: [`PART_D_CONTROL.md`](robotis_tb3/PART_D_CONTROL_Full_Details.md). Results, plots and raw files: [`evidence/part-d/`](robotis_tb3/evidence/part-d/). Code: [`robotis_tb3/lqr/`](robotis_tb3/lqr/).
+Results, plots and raw files: [`evidence/part-d/`](robotis_tb3/evidence/part-d/). Code: [`robotis_tb3/lqr/`](robotis_tb3/lqr/).
 
 ![Cross-track error per trial](robotis_tb3/evidence/part-d/eval_cmp/tracking_boxplot.png)
 

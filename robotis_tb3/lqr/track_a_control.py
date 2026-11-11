@@ -1,6 +1,7 @@
 """Part D: LQR path tracker on a latched, straightened reference. No simulator imports.
 
-Why a latched reference?
+#TLDR(Starting point is robot location and hence crosstrackerror = 0). 
+Polyline is simplistic and doesn't introduce complex curves/architecture
 ------------------------
 The planner replans from the *estimated* position every frame, so a path that
 always starts at the robot has near-zero cross-track error by construction.
@@ -25,7 +26,7 @@ ROTATE_EXIT = 0.25      # rad: hysteresis, resume driving below this
 def project_on_segment(a, b, p):
     """(s, length, psi_p, e_y) of point p relative to segment a->b.
 
-    s is the unclipped along-track distance from a, e_y is left-positive."""
+    s is the unclipped along-track distance from a, e_y is left-positive.""" # Let's the robot know when past segment
     d = b - a
     length = float(np.linalg.norm(d))
     if length < 1e-9:
@@ -36,7 +37,7 @@ def project_on_segment(a, b, p):
     return float(r @ t), length, float(np.arctan2(t[1], t[0])), float(r @ n)
 
 
-class ReferencePath:
+class ReferencePath: #resets path on new reference, goal moving 12cm, robot lost(40cm), Segment blocked(3 frames)
     def __init__(self, planner, blocked_frames=3, lost_distance=0.40):
         self.planner = planner
         self.blocked_frames = blocked_frames
@@ -75,7 +76,7 @@ class ReferencePath:
         return out
 
     # ---- latching logic ----------------------------------------------------
-    def update(self, estimate_xy, path, goal):
+    def update(self, estimate_xy, path, goal): #Keep old Nodes/Segments + Error
         """Return the current reference polyline (a list; identity changes on adoption)."""
         if not path:
             return self.points
@@ -128,7 +129,7 @@ class ReferencePath:
         return best
 
 
-class LQRPathTracker(StateFeedbackTracker):
+class LQRPathTracker(StateFeedbackTracker): #Confirms more than 2 segments 
     """State-feedback tracker: w = -K [e_y, e_theta], K from discrete LQR at v_nom.
 
     Uses the ESTIMATED pose only (the caller passes ekf.pose). Docking, LiDAR stop

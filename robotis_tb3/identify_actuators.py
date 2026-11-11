@@ -71,12 +71,12 @@ class Bench:
         return t, wr, v, yaw
 
 
-def first_order(t, gain, tau, td):
+def first_order(t, gain, tau, td): #Standard step response + Dead time
     x = np.clip(t - td, 0.0, None)
     return gain * (1.0 - np.exp(-x / tau))
 
 
-def fit_lag(t, y):
+def fit_lag(t, y): #Curve_fit - Nonlinear least squares fit
     """Fit y = gain*(1-exp(-(t-td)/tau)); returns gain, tau, td."""
     p0 = (y[-1] if abs(y[-1]) > 1e-9 else 1.0, 0.1, 0.0)
     try:
@@ -87,7 +87,7 @@ def fit_lag(t, y):
         return np.array([np.nan, np.nan, np.nan])
 
 
-def main():
+def main(): #Calculate Wheel step response, Friction offset, Yaw dead zone
     ap = argparse.ArgumentParser()
     ap.add_argument('--friction', type=float, default=1.0)
     ap.add_argument('--output', default='actuator_id')
